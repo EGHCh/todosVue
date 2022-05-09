@@ -34,8 +34,8 @@
                 <button @click="eliminarTarea($index)" type="button" class="btn btn-secondary">-</button>
                 <!-- CON V-FOR -->
                 <select @change="moverTarea(tarea, $index, $event)" class="form-select form-select-sm" aria-label=".form-select-sm multiple select">
-                  <option>En proceso</option>
-                  <option>Completada</option>
+                  <option value="En proceso">En proceso</option>
+                  <option value="Completada">Completada</option>
                 </select>
               </div>
             </li>
@@ -49,10 +49,10 @@
             >
               {{ $index + 1 }}: {{ tarea }}
                <div class="d-flex col-4 gap-1 mx-auto">
-                <button @click="eliminarTarea($index)" type="button" class="btn btn-secondary">-</button>
+                <button @click="eliminarTareaCompletada($index)" type="button" class="btn btn-secondary">-</button>
                 <select @change="moverTarea(tarea, $index, $event)" class="form-select form-select-sm" aria-label=".form-select-sm multiple select">
-                  <option>En proceso</option>
-                  <option>Completada</option>
+                  <option value="Completada">Completada</option>
+                  <option value="En proceso">En proceso</option>
                 </select>
               </div>
             </li>
@@ -76,22 +76,22 @@ export default {
       this.tareasNuevas.unshift(this.nuevaTarea);
       this.nuevaTarea = "";
     },
-    eliminarTarea(index, estadoTarea) {
-      if(estadoTarea === "En proceso"){
+    eliminarTarea(index) {
       this.tareasNuevas.splice(index, 1);
-      } else {
-        this.tareasCompletadas.splice(index, 1)
-      }
+    },
+    eliminarTareaCompletada(index) {
+      this.tareasCompletadas.splice(index, 1)
     },
     moverTarea(tarea, index, event){
       console.log(this.estadoTarea)
-      if (event.target.value === "En proceso") {
+      if (event.target.value == "Completada") {
         this.tareasCompletadas.push(tarea);
-        this.eliminarTarea(index, "En proceso");
-      } else {
-        console.log("dentro del else")
+        this.tareasNuevas.splice(index, 1);
+        console.log("dentro del else");
+      } else if (event.target.value == "En proceso") {
+        console.log("dentro del else");
         this.tareasNuevas.push(tarea);
-        this.eliminarTarea(index, "Completada");
+        this.tareasCompletadas.splice(index, 1);
       }
     }
   },
